@@ -129,3 +129,49 @@ pub struct InterfaceOspfSettings {
     pub passive: Option<bool>,
     pub network_type: Option<String>,
 }
+
+pub fn render_switch_templates(
+    input_data: &String,
+    fabric: &String,
+    template: &String,
+) -> Result<String> {
+    let switch_input_data: Switch = serde_json::from_str::<Switch>(&input_data).unwrap();
+
+    let template_directory: String = "./templates/".to_owned() + &fabric + "/**/*.tera";
+
+    let tera: Tera = match Tera::new(&template_directory) {
+        Ok(t) => t,
+        Err(e) => {
+            println!("Parsing error(s): {}", e);
+            ::std::process::exit(1);
+        }
+    };
+
+    let context = &Context::from_serialize(&switch_input_data).unwrap();
+
+    let template_name = template.to_owned() + ".tera";
+
+    return tera.render(&template_name, &context);
+}
+
+pub fn render_router_templates(
+    input_data: &String,
+    fabric: &String,
+    template: &String,
+) -> Result<String> {
+    let router_input_data: Router = serde_json::from_str::<Router>(&input_data).unwrap();
+
+    let tera: Tera = match Tera::new("templates/**/*.tera") {
+        Ok(t) => t,
+        Err(e) => {
+            println!("Parsing error(s): {}", e);
+            ::std::process::exit(1);
+        }
+    };
+
+    let context = &Context::from_serialize(&router_input_data).unwrap();
+
+    let template_name = fabric.to_owned() + "/" + &template + ".tera";
+
+    return tera.render(&template_name, &context);
+}
