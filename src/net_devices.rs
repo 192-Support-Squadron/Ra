@@ -12,6 +12,7 @@ pub struct Interface {
     pub service_policies: Option<ServicePolicies>,
     pub switchport: Option<Switchport>,
     pub ip_address: Option<String>,
+    pub ipv6_address: Option<String>,
     pub ospf: Option<InterfaceOspfSettings>,
     pub vrrp: Option<VrrpSettingsV4>,
     pub dhcp_relays: Option<Vec<String>>,
