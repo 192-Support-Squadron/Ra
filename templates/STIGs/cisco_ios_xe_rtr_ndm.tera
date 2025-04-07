@@ -1,0 +1,12 @@
+! V-215844
+ip ssh version 2
+ip ssh server algorithm mac hmac-sha2-256
+
+! V-215845
+ip ssh server algorithm encryption aes256-ctr aes192-ctr aes128-ctr
+
+! V-215833
+line con 0
+ exec-timeout 5 0
+line vty 0 4
+ exec-timeout 5 0
