@@ -77,38 +77,21 @@ pub struct Vlan {
     pub id: u32,
 }
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Switch {
+pub struct NetDevice {
     pub system: System,
-    pub switch_type: Option<String>,
+    pub function: Option<String>,
+    pub fabric: Option<String>,
     pub instance: Option<u32>,
     pub hostname: Option<String>,
     pub interfaces: Option<Vec<Interface>>,
-    pub vlans: Vec<Vlan>,
-}
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct IspOptions {
-    pub pe_ip_address: String,
-    pub pe_gw_address: String,
-    pub isp_subnet: SubnetInfo,
-    pub upload: String,
-    pub download: String,
+    pub vlans: Option<Vec<Vlan>>,
+    pub segment_routing: Option<SegmentRouting>,
 }
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct SubnetInfo {
     pub subnet: String,
     pub cidr: String,
     pub netmask: String,
-}
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Router {
-    pub system: System,
-    pub router_type: Option<String>,
-    pub instance: Option<u32>,
-    pub hostname: Option<String>,
-    pub interfaces: Option<Vec<Interface>>,
-    pub segment_routing: Option<SegmentRouting>,
-    pub isp_circuit_info: Option<IspOptions>,
-    pub vlans: Option<Vec<Vlan>>,
 }
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct SegmentRouting {
