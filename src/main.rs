@@ -16,34 +16,19 @@ fn main() {
     let cli = Cli::parse();
 
     let input_contents =
-        fs::read_to_string(&cli.input_file).expect("Should have been able to read the file");
+        fs::read_to_string(&cli.input_file)
+            .expect("Should have been able to read the file");
 
     let input_template = serde_json::from_str::<deployment::Deployment>(&input_contents).unwrap();
 
     for device in input_template.devices {
-        let rendered_device_input = match device.fabric.as_str() {
-            "wolfpack" => {
-                deployment::render_device_input_templates(&device, &input_template.main).unwrap()
-            }
-            "alpaca" => {
-                deployment::render_device_input_templates(&device, &input_template.main).unwrap()
-            }
-            _ => String::from("Not a supported fabric"),
-        };
+        let rendered_device_input = deployment::render_device_input_templates(&device, &input_template.main).unwrap();
 
-        let device_config = match device.fabric.as_str() {
-            "wolfpack" => net_devices::render_router_templates(
+        let device_config = net_devices::render_net_device_templates(
                 &rendered_device_input,
                 &device.fabric,
                 &device.template,
-            ),
-            "alpaca" => net_devices::render_switch_templates(
-                &rendered_device_input,
-                &device.fabric,
-                &device.template,
-            ),
-            _ => Ok(String::from("Not a supported Fabric")),
-        };
+            );
 
         println!("{:?}", device_config);
         if let Ok(config) = device_config {
