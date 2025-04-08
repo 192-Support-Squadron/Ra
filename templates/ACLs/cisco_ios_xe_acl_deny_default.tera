@@ -1,0 +1,3 @@
+! Meets V-216662 when used on external interface without need for return traffic
+ip access-list extended acl_deny_all_in
+ deny ip any any log-input
