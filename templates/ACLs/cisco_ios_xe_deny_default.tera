@@ -1,0 +1,11 @@
+! Meets V-216662 when used on external interface without need for return traffic
+ip access-list extended acl_deny_all_in
+ deny ip any any log-input
+
+ip access-list extended acl_allow_ipsec_in
+ {% for hub in ipsec.hubs -%}
+ permit esp {{ hub }} any
+ permit udp {{ hub }} any eq 4500
+ permit udp {{ hub }} any eq 500
+ {%- endfor %}
+ deny ip any any log-input
